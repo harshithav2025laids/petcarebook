@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming Vaccinations - PetCareBook</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0f2f8;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 22px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .header h1 { font-size: 22px; font-weight: 700; }
+        .header p { font-size: 13px; opacity: 0.85; margin-top: 2px; }
+
+        .header-right a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.85;
+            padding: 8px 16px;
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .header-right a:hover { background: rgba(255,255,255,0.15); opacity: 1; }
+
+        .container {
+            width: 92%;
+            max-width: 1000px;
+            margin: 36px auto;
+        }
+
+        .page-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e1b4b;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .empty-state {
+            background: white;
+            border-radius: 12px;
+            padding: 60px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        }
+
+        .empty-state .icon { font-size: 52px; margin-bottom: 16px; }
+        .empty-state h3 { font-size: 18px; color: #1e1b4b; margin-bottom: 8px; }
+        .empty-state p { color: #6b7280; font-size: 14px; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        }
+
+        thead {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+        }
+
+        thead th {
+            padding: 14px 18px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f3f4f6;
+            transition: background 0.15s;
+        }
+
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: #f9fafb; }
+
+        tbody td {
+            padding: 14px 18px;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .due-soon {
+            color: #b45309;
+            font-weight: 600;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 24px;
+            color: #4f46e5;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="header-left">
+        <span style="font-size:26px;">🐾</span>
+        <div>
+            <h1>PetCareBook</h1>
+            <p>Upcoming Vaccinations</p>
+        </div>
+    </div>
+    <div class="header-right">
+        <a href="/">← Dashboard</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <h2 class="page-title">
+        📅 Upcoming Vaccinations
+        <span class="badge" th:text="${records.size()} + ' due'">0 due</span>
+    </h2>
+
+    <div th:if="${records.empty}" class="empty-state">
+        <div class="icon">🎉</div>
+        <h3>All Clear!</h3>
+        <p>No vaccinations are due in the next 7 days.</p>
+    </div>
+
+    <table th:if="${!records.empty}">
+        <thead>
+            <tr>
+                <th>Pet Name</th>
+                <th>Species</th>
+                <th>Vaccine</th>
+                <th>Date Given</th>
+                <th>Next Due Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="record : ${records}">
+                <td th:text="${record.pet.name}">-</td>
+                <td th:text="${record.pet.species}">-</td>
+                <td th:text="${record.vaccinationType.vaccineName}">-</td>
+                <td th:text="${record.dateGiven}">-</td>
+                <td class="due-soon" th:text="${record.nextDueDate}">-</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="/" class="back-link">← Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>
